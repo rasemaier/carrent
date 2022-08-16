@@ -11,8 +11,8 @@ public class UnitTest1
     {
         CarController carController = new CarController();
         CarResponseDto carResponseDto = new CarResponseDto();
-        carController.Post(carResponseDto);
+        var test = carController.Post(carResponseDto);
 
-        Assert.Equal(1, 1);
+        Assert.Equal(test,carResponseDto);
     }
 }

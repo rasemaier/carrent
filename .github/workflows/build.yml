@@ -36,13 +36,14 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          dotnet tool update --global dotnet-coverage
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"rasemaier_carrent" /o:"rasemaier" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"rasemaier_carrent" /o:"rasemaier" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.host.url="https://sonarcloud.io"
           & dotnet restore .\source\CarRent.sln
           & dotnet build .\source\CarRent.sln
           & dotnet test .\source\CarRent.sln

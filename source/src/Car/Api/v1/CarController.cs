@@ -35,8 +35,9 @@ namespace CarRent.Car.Api
 
         // POST api/<CarController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public CarResponseDto Post([FromBody] CarResponseDto value)
         {
+            return value;
         }
 
         // PUT api/<CarController>/5

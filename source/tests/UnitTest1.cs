@@ -1,4 +1,5 @@
 using CarRent.Car.Api;
+using CarRent.Car.Api.v1;
 using Xunit;
 
 namespace CarRent.Tests;
@@ -9,8 +10,8 @@ public class UnitTest1
     public void Test1()
     {
         CarController carController = new CarController();
-
-        carController.Put(1,"");
+        CarResponseDto carResponseDto = new CarResponseDto();
+        carController.Post(carResponseDto);
 
         Assert.Equal(1, 1);
     }

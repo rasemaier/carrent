@@ -1,29 +1,37 @@
-﻿using CarRent.Car.Api.v1;
-using Microsoft.AspNetCore.Mvc;
+﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace CarRent.Car.Api
+namespace CarRent.Car.Api.v1
 {
-    [Route("api/[controller]")]
+    using CarRent.Car.Domain;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    [Route("api/v1/car")]
     [ApiController]
     public class CarController : ControllerBase
     {
+        private readonly ICarRepository _repository;
+
+        public CarController(ICarRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/<CarController>
         [HttpGet]
-        public IEnumerable<CarResponseDto> Get()
+        public IActionResult Get()
         {
-            return new CarResponseDto[]
-                {
-                    new CarResponseDto
-                    {
-                        Id = Guid.NewGuid(),
-                        CarNumber = "XW82",
-                        Brand ="",
-                        Type ="",
-                        CarClass ="Luxury"
-                    }
-            };
+            var cars = _repository.GetAll();
+            var carDtos = cars.Select(c => new CarResponseDto
+            {
+                CarId = c.Id,
+                CarNumber = c.CarNumber,
+                Brand = c.Brand.Name,
+                Type = c.Type.Name,
+                CarClass = c.CarClass.Name
+            });
+            return Ok(carDtos);
+            
         }
 
         // GET api/<CarController>/5
@@ -35,9 +43,8 @@ namespace CarRent.Car.Api
 
         // POST api/<CarController>
         [HttpPost]
-        public CarResponseDto Post([FromBody] CarResponseDto value)
+        public void Post([FromBody] string value)
         {
-            return value;
         }
 
         // PUT api/<CarController>/5
